@@ -13,3 +13,18 @@ def delivery_summary(record: dict) -> dict:
         "owner": normalize_delivery_owner(record.get("owner")),
         "status": record["status"],
     }
+
+
+def filter_records_by_owner(records, owner=None):
+    """Return records for the given owner, preserving input order.
+
+    A missing owner selection (None) means no filtering.
+    """
+    if owner is None:
+        return list(records)
+    target = normalize_delivery_owner(owner)
+    return [
+        record
+        for record in records
+        if normalize_delivery_owner(record.get("owner")) == target
+    ]
